@@ -12,8 +12,10 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from "../utils/axios"
+console.log('Estoy adentro del login')
 export default {
     name: "Login",
     data: function() {
@@ -34,9 +36,11 @@ export default {
                     token_refresh: res.data.refresh,
                 }
                 this.$emit('completedLogin', dataLogin)
+
+                
             })
             .catch((error) =>{
-              if (error.response.status == "401")
+              if (error.response?.status == "401")
                   alert("ERROR 401: Credenciales Incorrectas")
             })
         }
