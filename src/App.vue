@@ -4,9 +4,9 @@
     <div class="header">
       <h1>Banco Misión TIC</h1>
       <nav v-if="is_auth">
-        <button>Inicio</button>
-        <button>Cuenta</button>
-        <button>Cerrar sesión</button>
+        <button @click="loadHome">Inicio</button>
+        <button @click='loadAccount'>Cuenta</button>
+        <button @click='logout'>Cerrar sesión</button>
       </nav>
       <nav v-else>
         <button @click="loadLogin">Iniciar sesión</button>
@@ -16,10 +16,15 @@
     </div>
 
     <div class="main-component">
-      <router.view>
+           <router-view
+                @completedLogin="completedLogin"
+                
+                
+            > 
+            </router-view><!--evento que viene de Login y account-->
+            
+        </div>
 
-      </router.view>
-    </div>
     <div class="footer">
       <h2>Misión TIC 2022</h2>
     </div>
@@ -36,12 +41,41 @@ export default {
     }
   },
   methods: {
+    veridyAuth:function(){
+      this.is_auth=localStorage.getItem('isAuth')||false;
+      if(this.is_auth)
+        this.$router.push({name:'home'})
+      else
+        this.$router.push({name:'login'})
+
+    },
     loadLogin: function(){
       this.$router.push({name:"login"})
+      console.log('loadLogin activado')
     },
     loadSignUp: function(){
       this.$router.push({name:"signup"})
     },
+    loadHome: function(){
+      this.$router.push({name:'home'})
+    },
+    loadAccount: function(){
+      this.$router.push({name:"account"})
+    },
+    logout: function() {
+      localStorage.clear()
+      alert('sesión Cerrada');
+      this.veridyAuth();
+    },
+    completedLogin: function(data){
+      localStorage.setItem('isAuth',true);
+      localStorage.setItem('username',data.username);
+      localStorage.setItem('token_access',data.token_access);
+      localStorage.setItem('token_refresh',data.token_refresh);
+      alert('Autenticación Exitosa')
+      this.veridyAuth()
+    }
+
   },
   created: function(){
 

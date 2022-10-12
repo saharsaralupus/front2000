@@ -22,7 +22,8 @@
         </form>
       </div>
     </div>
-  </template>
+
+</template>
 <script>
 import axios from '../utils/axios';
 export default {
